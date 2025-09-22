@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Romanian-Swedish Definition Match</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f8f8f8;
             margin: 0;
-            padding: 0;
+            padding: 20px 10px;
         }
         h2 {
             text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
         }
         .container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            margin-top: 40px;
+            gap: 20px;
         }
         .list {
-            margin: 0 40px;
             padding: 0;
-            width: 220px;
+            width: 90vw;
+            max-width: 350px;
+            list-style: none;
+        }
+        @media(min-width: 480px){
+            .list {
+                width: 220px;
+            }
         }
         .item {
             background: #fff;
-            margin-bottom: 10px;
-            padding: 12px;
+            margin-bottom: 12px;
+            padding: 16px 20px;
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.07);
             cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1.4;
+            user-select: none;
             transition: background 0.2s, color 0.2s;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
         }
         .item.selected {
             background: #d4eaf7;
@@ -44,8 +60,8 @@
         .success {
             color: #2e6343;
             text-align: center;
-            font-size: 1.25em;
-            margin-top: 30px;
+            font-size: 1.5rem;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -57,7 +73,6 @@
     </div>
     <div id="result" class="success"></div>
     <script>
-        // Example data: replace with your own items!
         const pairs = [
             { ro: "sănătate", sv: "hälsa" },
             { ro: "obicei", sv: "vana" },
@@ -69,7 +84,6 @@
             { ro: "recompensă", sv: "belöning" }
         ];
 
-        // Shuffle helper
         function shuffle(array) {
             return array.sort(() => Math.random() - 0.5);
         }
@@ -136,7 +150,6 @@
             }
         }
 
-        // Initial render
         renderLists();
     </script>
 </body>
