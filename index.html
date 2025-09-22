@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Romanian-Swedish Definition Match</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        .list {
+            margin: 0 40px;
+            padding: 0;
+            width: 220px;
+        }
+        .item {
+            background: #fff;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .item.selected {
+            background: #d4eaf7;
+            color: #005273;
+        }
+        .item.matched {
+            background: #d3efd3;
+            color: #2e6343;
+            cursor: default;
+        }
+        .success {
+            color: #2e6343;
+            text-align: center;
+            font-size: 1.25em;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Match the Romanian Definitions to Their Swedish Translations</h2>
+    <div class="container">
+        <ul id="romanianList" class="list"></ul>
+        <ul id="swedishList" class="list"></ul>
+    </div>
+    <div id="result" class="success"></div>
+    <script>
+        // Example data: replace with your own items!
+        const pairs = [
+            { ro: "sănătate", sv: "hälsa" },
+            { ro: "obicei", sv: "vana" },
+            { ro: "bani", sv: "pengar" },
+            { ro: "putere", sv: "kraft" },
+            { ro: "fericire", sv: "lycka" },
+            { ro: "disciplina", sv: "disciplin" },
+            { ro: "provocare", sv: "utmaning" },
+            { ro: "recompensă", sv: "belöning" }
+        ];
+
+        // Shuffle helper
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        let romItems = shuffle(pairs.map((item, idx) => ({ text: item.ro, idx })));
+        let sweItems = shuffle(pairs.map((item, idx) => ({ text: item.sv, idx })));
+
+        let selectedRo = null;
+        let selectedSv = null;
+        let matched = Array(pairs.length).fill(false);
+
+        function renderLists() {
+            const roList = document.getElementById('romanianList');
+            const svList = document.getElementById('swedishList');
+            roList.innerHTML = '';
+            svList.innerHTML = '';
+            romItems.forEach((item, i) => {
+                let cls = 'item';
+                if (matched[item.idx]) cls += ' matched';
+                else if (selectedRo === i) cls += ' selected';
+                roList.innerHTML +=
+                    `<li class="${cls}" onclick="selectRo(${i})">${item.text}</li>`;
+            });
+            sweItems.forEach((item, i) => {
+                let cls = 'item';
+                if (matched[item.idx]) cls += ' matched';
+                else if (selectedSv === i) cls += ' selected';
+                svList.innerHTML +=
+                    `<li class="${cls}" onclick="selectSv(${i})">${item.text}</li>`;
+            });
+        }
+
+        window.selectRo = function(i) {
+            if (matched[romItems[i].idx]) return;
+            selectedRo = i;
+            renderLists();
+        }
+
+        window.selectSv = function(i) {
+            if (selectedRo === null) return;
+            const roIdx = romItems[selectedRo].idx;
+            const svIdx = sweItems[i].idx;
+            if (roIdx === svIdx) {
+                matched[roIdx] = true;
+                selectedRo = null;
+                selectedSv = null;
+                renderLists();
+                checkWin();
+            } else {
+                selectedSv = i;
+                renderLists();
+                setTimeout(() => {
+                    selectedRo = null;
+                    selectedSv = null;
+                    renderLists();
+                }, 800);
+            }
+        }
+
+        function checkWin() {
+            if (matched.every(Boolean)) {
+                document.getElementById('result').textContent =
+                    "Felicitări! Ai potrivit toate definițiile!";
+            }
+        }
+
+        // Initial render
+        renderLists();
+    </script>
+</body>
+</html>
