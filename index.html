@@ -17,22 +17,31 @@
             margin-bottom: 30px;
         }
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-        .list {
-            padding: 0;
-            width: 90vw;
-            max-width: 350px;
-            list-style: none;
-        }
-        @media(min-width: 480px){
-            .list {
-                width: 220px;
-            }
-        }
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.list {
+    width: 45vw;
+    max-width: 350px;
+}
+
+/* Stack vertically only on narrow screens */
+@media (max-width: 480px) {
+    .container {
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .list {
+        width: 90vw;
+        max-width: none;
+    }
+}
+
         .item {
             background: #fff;
             margin-bottom: 12px;
@@ -154,4 +163,5 @@
     </script>
 </body>
 </html>
+
 
